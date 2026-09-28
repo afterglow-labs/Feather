@@ -1,0 +1,97 @@
+name: Feather
+
+options:
+  minimumXcodeGenVersion: 2.45.4
+  createIntermediateGroups: true
+
+configs:
+  Debug: debug
+  Release: release
+
+packages:
+  AltSourceKit:
+    path: AltSourceKit
+  NimbleKit:
+    path: NimbleKit
+  Zsign:
+    path: Zsign
+  IDeviceKit:
+    path: IDeviceKitten
+  Vapor:
+    url: https://github.com/vapor/vapor
+    exactVersion: 4.104.0
+  Nuke:
+    url: https://github.com/kean/Nuke
+    exactVersion: 12.8.0
+  Zip:
+    url: https://github.com/marmelroy/Zip
+    exactVersion: 2.1.2
+  SWCompression:
+    url: https://github.com/tsolomko/SWCompression
+    exactVersion: 4.8.7
+
+fileGroups:
+  - project.yml
+  - Feather/Resources/Info.plist
+  - Feather/Supporting Files/Feather.entitlements
+  - Feather/Supporting Files/Feather-Bridging-Header.h
+
+targets:
+  Feather:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: Feather
+        excludes:
+          - Resources/Info.plist
+          - Resources/ellekit.deb
+          - Resources/AppIcon.icon/**
+          - Supporting Files/Feather.entitlements
+          - Supporting Files/Feather-Bridging-Header.h
+    dependencies:
+      - package: AltSourceKit
+      - package: NimbleKit
+        product: NimbleExtensions
+      - package: NimbleKit
+        product: NimbleJSON
+      - package: NimbleKit
+        product: NimbleViews
+      - package: Zsign
+      - package: IDeviceKit
+        product: IDeviceSwift
+      - package: Vapor
+      - package: Nuke
+        product: NukeUI
+      - package: Zip
+      - package: SWCompression
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_ENTITLEMENTS: Feather/Supporting Files/Feather.entitlements
+        CODE_SIGN_STYLE: Automatic
+        CURRENT_PROJECT_VERSION: "1"
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Feather/Resources/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Feather
+        INFOPLIST_KEY_UILaunchStoryboardName: Launch Screen.storyboard
+        MARKETING_VERSION: 2.9.0
+        PRODUCT_BUNDLE_IDENTIFIER: thewonderofyou.Feather
+        SUPPORTS_MACCATALYST: YES
+        SWIFT_OBJC_BRIDGING_HEADER: Feather/Supporting Files/Feather-Bridging-Header.h
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+      configs:
+        Debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: "DEBUG $(inherited)"
+
+schemes:
+  Feather:
+    build:
+      targets:
+        Feather: all
+    run:
+      config: Debug
+    archive:
+      config: Release
